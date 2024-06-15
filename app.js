@@ -12,11 +12,16 @@ app.post("/proxy", async (req, res) => {
   if (!data.url) return res.sendStatus(400);
   const url = data.url;
   delete data.url;
-  const resRaw = fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+  let resRaw;
+  if (Object.keys(data).length) {
+    resRaw = fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  } else {
+    resRaw = fetch(url);
+  }
   if (!resRaw.ok) {
     return res.status(resRaw.status).send(resRaw.statusText);
   }
