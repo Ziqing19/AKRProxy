@@ -1,15 +1,37 @@
 const express = require("express");
+const fetch = require("node-fetch");
 const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ extended: false, limit: "20mb" }));
 
-app.post("/proxy", (req, res) => {
-  const data = JSON.stringify(req.body);
-  console.log(data);
-  res.send(data);
+app.post("/proxy", async (req, res) => {
+  const data = req.body;
+  console.log("request data",data)
+  if (!data.url) return res.sendStatus(400);
+  const url = data.url;
+  delete data.url;
+  const resRaw = fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!resRaw.ok) {
+    return res.status(resRaw.status).send(resRaw.statusText);
+  }
+  let response;
+  try {
+    response = resRaw.json();
+  } catch (err) {
+    response = resRaw.text();
+  } finally {
+    console.log("response",response);
+    res.send(response);
+  }
 });
+
+app.get("/ping", (req, res) => res.sendStatus(200));
 
 app.get("/", (req, res) => res.type('html').send(html));
 
