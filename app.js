@@ -3,7 +3,9 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.post("/proxy", (req, res) => {
-  res.send(JSON.stringify(req.body));
+  const data = JSON.stringify(req.body);
+  console.log(data);
+  res.send(data);
 });
 
 app.get("/", (req, res) => res.type('html').send(html));
