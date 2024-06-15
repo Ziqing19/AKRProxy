@@ -39,7 +39,10 @@ app.post("/proxy", async (req, res) => {
   }
 });
 
-app.get("/ping", (req, res) => res.sendStatus(200));
+app.get("/ping", (req, res) => {
+  console.log("PING at", new Date());
+  res.sendStatus(200);
+});
 
 app.get("/", (req, res) => res.type('html').send(html));
 
