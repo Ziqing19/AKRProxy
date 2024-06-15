@@ -15,13 +15,13 @@ app.post("/proxy", async (req, res) => {
   let resRaw;
   console.log(Object.keys(data).length);
   if (Object.keys(data).length) {
-    resRaw = fetch(url, {
+    resRaw = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
   } else {
-    resRaw = fetch(url);
+    resRaw = await fetch(url);
   }
   console.log(resRaw.status);
   console.log(resRaw.statusText);
@@ -30,9 +30,9 @@ app.post("/proxy", async (req, res) => {
   }
   let response;
   try {
-    response = resRaw.json();
+    response = await resRaw.json();
   } catch (err) {
-    response = resRaw.text();
+    response = await resRaw.text();
   } finally {
     console.log("response",response);
     res.send(response);
