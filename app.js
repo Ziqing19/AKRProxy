@@ -13,6 +13,7 @@ app.post("/proxy", async (req, res) => {
   const url = data.url;
   delete data.url;
   let resRaw;
+  console.log(Object.keys(data).length);
   if (Object.keys(data).length) {
     resRaw = fetch(url, {
       method: "POST",
@@ -22,6 +23,8 @@ app.post("/proxy", async (req, res) => {
   } else {
     resRaw = fetch(url);
   }
+  console.log(resRaw.status);
+  console.log(resRaw.statusText);
   if (!resRaw.ok) {
     return res.status(resRaw.status).send(resRaw.statusText);
   }
