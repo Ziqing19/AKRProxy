@@ -39,6 +39,28 @@ app.post("/proxy", async (req, res) => {
   }
 });
 
+app.post("/proxy2",async (req, res) => {
+  const data = req.body;
+  console.log("request data",data)
+  if (!data.url) return res.sendStatus(400);
+  const url = data.url;
+  delete data.url;
+  let resRaw;
+  console.log(Object.keys(data).length);
+  if (Object.keys(data).length) {
+    resRaw = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  } else {
+    resRaw = await fetch(url);
+  }
+  console.log(resRaw.status);
+  console.log(resRaw.statusText);
+  resRaw.pipe(res);
+});
+
 app.get("/ping", (req, res) => {
   console.log("PING at", new Date());
   res.sendStatus(200);
