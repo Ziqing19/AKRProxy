@@ -58,7 +58,7 @@ app.post("/proxy2",async (req, res) => {
   }
   console.log(resRaw.status);
   console.log(resRaw.statusText);
-  resRaw.pipe(res);
+  resRaw.body.pipe(res);
 });
 
 app.get("/ping", (req, res) => {
