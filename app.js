@@ -25,39 +25,6 @@ app.post("/proxy", async (req, res) => {
   }
   console.log(resRaw.status);
   console.log(resRaw.statusText);
-  if (!resRaw.ok) {
-    return res.status(resRaw.status).send(resRaw.statusText);
-  }
-  let response;
-  try {
-    response = await resRaw.json();
-  } catch (err) {
-    response = await resRaw.text();
-  } finally {
-    console.log("response",response);
-    res.send(response);
-  }
-});
-
-app.post("/proxy2",async (req, res) => {
-  const data = req.body;
-  console.log("request data",data)
-  if (!data.url) return res.sendStatus(400);
-  const url = data.url;
-  delete data.url;
-  let resRaw;
-  console.log(Object.keys(data).length);
-  if (Object.keys(data).length) {
-    resRaw = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-  } else {
-    resRaw = await fetch(url);
-  }
-  console.log(resRaw.status);
-  console.log(resRaw.statusText);
   resRaw.body.pipe(res);
 });
 
