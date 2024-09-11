@@ -7,7 +7,7 @@ const port = process.env.PORT || 3001;
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ extended: false, limit: "20mb" }));
 app.use(cors({
-  origin: /[^.]+\.arkrec\.com/
+  origin: /([^.]+\.arkrec\.com)|(localhost:3000)/
 }));
 
 app.post("/proxy", async (req, res) => {
