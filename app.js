@@ -33,6 +33,26 @@ app.get("/ping", (req, res) => {
   res.sendStatus(200);
 });
 
+app.get("/parse-youtube-url",async (req, res) => {
+  const { url } = req.body;
+  if (!url.includes("youtube.com/watch")) {
+    return res.sendStatus(400);
+  }
+  try {
+    const id = url.match(/\?v=([^&?]+)/)[1];
+    const listUrl = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${process.env.YoutubeToken}`;
+    const listRaw = await fetch(listUrl);
+    const listData = await listRaw.json();
+    const channelId = listData.items[0]["snippet"]["channelId"];
+    const channelUrl = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${process.env.YoutubeToken}`;
+    const channelRaw = await fetch(channelUrl);
+    const channelData = await channelRaw.json();
+    res.send({listData, channelData});
+  } catch (err) {
+    res.sendStatus(400);
+  }
+});
+
 app.get("/", (req, res) => res.type('html').send(html));
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
