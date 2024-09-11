@@ -37,7 +37,7 @@ app.get("/ping", (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("/parse-youtube-url",async (req, res) => {
+app.post("/parse-youtube-url",async (req, res) => {
   const { url } = req.body;
   if (!url.includes("youtube.com/watch")) {
     return res.sendStatus(400);
