@@ -53,6 +53,7 @@ app.post("/parse-youtube-url",async (req, res) => {
     const channelData = await channelRaw.json();
     res.send({listData, channelData});
   } catch (err) {
+    console.log(err)
     res.sendStatus(400);
   }
 });
