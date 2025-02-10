@@ -2,6 +2,8 @@ const express = require("express");
 const fetch = require("node-fetch");
 const cors = require("cors");
 const app = express();
+
+require("dotenv").config({ path: "./.env", override: true });
 const port = process.env.PORT || 3001;
 
 app.use(express.json({ limit: "20mb" }));
